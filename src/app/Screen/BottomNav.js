@@ -62,15 +62,15 @@ const styles = StyleSheet.create({
     width: '100%',
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#000', // Black background
-    borderTopLeftRadius: 20, // Rounded top-left corner
-    borderTopRightRadius: 20, // Rounded top-right corner
+    backgroundColor: '#000', 
+    borderTopLeftRadius: 20, 
+    borderTopRightRadius: 20, 
   },
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '90%',
-    paddingVertical: 10, // Adds vertical padding for better spacing
+    paddingVertical: 10, 
   },
 });
 

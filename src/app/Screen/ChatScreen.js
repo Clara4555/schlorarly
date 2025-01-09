@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { View, Text, StyleSheet, Platform } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';  // Import the hook
+import { useSafeAreaInsets } from 'react-native-safe-area-context';  
 import { Image } from 'expo-image';
 import {
   Menu,
@@ -11,14 +11,14 @@ import {
 } from 'react-native-popup-menu';
 
 const ChatScreen = () => {
-  const { top } = useSafeAreaInsets();  // Get the top inset for safe area handling
+  const { top } = useSafeAreaInsets();  
 
   return (
     <View style={styles.container}>
       {/* Header with safe area handling */}
       <View 
         style={{
-          paddingTop: Platform.OS === 'ios' ? top : 10,  // Use the top inset on iOS, otherwise use a fallback value
+          paddingTop: Platform.OS === 'ios' ? top : 10,  
           flexDirection: 'row',
           justifyContent: 'space-between',
           paddingHorizontal: 20,
