@@ -1,53 +1,55 @@
 import React from 'react';
+import {BookSaved, Calendar, Home, Setting, Message, Messages} from 'iconsax-react-native'
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; // You can also use other icon libraries if preferred
+import { Colors } from '../constants/Colors';
 
 const BottomNav = ({ activeTab, setActiveTab }) => {
   return (
     <View style={styles.navContainer}>
       <View style={styles.bottomNav}>
         {/* Home Tab */}
-        <TouchableOpacity onPress={() => setActiveTab('home')}>
-          <MaterialIcons
-            name="home"
-            size={30}
-            color={activeTab === 'home' ? 'purple' : 'white'}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('home')}>
+          <Home
+            variant={activeTab === 'home' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'home' ?  Colors.purple: 'white'}
           />
         </TouchableOpacity>
 
         {/* Chat Tab */}
-        <TouchableOpacity onPress={() => setActiveTab('chat')}>
-          <MaterialIcons
-            name="chat"
-            size={30}
-            color={activeTab === 'chat' ? 'purple' : 'white'}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('chat')}>
+          <Messages
+            variant={activeTab === 'chat' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'chat' ?  Colors.purple : 'white'}
           />
         </TouchableOpacity>
 
-        {/* Communities Tab */}
-        <TouchableOpacity onPress={() => setActiveTab('communities')}>
-          <MaterialIcons
-            name="group"
-            size={30}
-            color={activeTab === 'communities' ? 'purple' : 'white'}
+        {/* Events Tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('events')}>
+          <Calendar
+            variant={activeTab === 'events' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'events' ?  Colors.purple : 'white'}
           />
         </TouchableOpacity>
 
-        {/* Notifications Tab */}
-        <TouchableOpacity onPress={() => setActiveTab('notifications')}>
-          <MaterialIcons
-            name="notifications"
-            size={30}
-            color={activeTab === 'notifications' ? 'purple' : 'white'}
+        {/* Courses Tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('courses')}>
+          <BookSaved
+            variant={activeTab === 'courses' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'courses' ?  Colors.purple : 'white'}
           />
         </TouchableOpacity>
 
         {/* Settings Tab */}
-        <TouchableOpacity onPress={() => setActiveTab('settings')}>
-          <MaterialIcons
-            name="settings"
-            size={30}
-            color={activeTab === 'settings' ? 'purple' : 'white'}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('settings')}>
+          <Setting
+            variant={activeTab === 'settings' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'settings' ? Colors.purple : 'white'}
           />
         </TouchableOpacity>
       </View>
@@ -58,19 +60,31 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
 const styles = StyleSheet.create({
   navContainer: {
     position: 'absolute',
-    bottom: 0,
-    width: '100%',
+    bottom: 20,
+    height: 65,
+    width: '94%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: 10,
+    borderRadius:30,
+    backgroundColor: Colors.tertiary,
+    overflow:'hidden'// Rounded top-right corner
+  },
+
+  navItem:{
+    flex: 1,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#000', 
-    borderTopLeftRadius: 20, 
-    borderTopRightRadius: 20, 
+    backgroundColor: '#000', // Black background
+    borderTopLeftRadius: 20, // Rounded top-left corner
+    borderTopRightRadius: 20, // Rounded top-right corner
   },
+
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '90%',
-    paddingVertical: 10, 
+    paddingVertical: 10, // Adds vertical padding for better spacing
   },
 });
 
