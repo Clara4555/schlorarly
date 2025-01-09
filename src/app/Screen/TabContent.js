@@ -4,6 +4,12 @@ import ChatScreen from './ChatScreen';
 import CommunitiesScreen from './CommunitiesScreen';
 import SettingsScreen from './SettingsScreen';
 import NotificationsScreen from './NotificationsScreen';
+import { Colors } from '../constants/Colors';
+import ChatsPage from './pages/ChatsPage';
+import EventsPage from './pages/EventsPage';
+import SettingsPage from './pages/SettingsPage';
+import HomePage from './pages/HomePage';
+import CoursesPage from './pages/CoursesPage';
 
 const TabContent = ({ activeTab }) => {
   const [fadeAnim] = useState(new Animated.Value(0)); // Initial opacity is 0
@@ -21,23 +27,19 @@ const TabContent = ({ activeTab }) => {
   let content;
   switch (activeTab) {
     case 'chat':
-      content = <ChatScreen />;
+      content = <ChatsPage />;
       break;
-    case 'communities':
-      content = <CommunitiesScreen />;
+    case 'events':
+      content = <EventsPage />;
+      break;
+    case 'courses':
+      content = <CoursesPage />;
       break;
     case 'settings':
-      content = <SettingsScreen />;
-      break;
-    case 'notifications':
-      content = <NotificationsScreen />;
+      content = <SettingsPage />;
       break;
     default:
-      content = (
-        <View style={styles.defaultContainer}>
-          <Text style={styles.defaultText}>Welcome to the Home Screen!</Text>
-        </View>
-      );
+      content = <HomePage />;
       break;
   }
 
@@ -51,6 +53,8 @@ const TabContent = ({ activeTab }) => {
 const styles = StyleSheet.create({
   contentContainer: {
     flex: 1,
+    width: '100%',
+    backgroundColor: Colors.black
   },
   defaultContainer: {
     flex: 1,

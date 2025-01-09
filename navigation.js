@@ -10,13 +10,17 @@ import CommunitiesScreen from './src/app/Screen/CommunitiesScreen';  // Communit
 import NotificationsScreen from './src/app/Screen/NotificationsScreen';  // Notifications
 import ProfileScreen from './src/app/Screen/ProfileScreen';  // Profile (Settings)
 import SettingsScreen from './src/app/Screen/SettingsScreen';  // Settings
+import ChatsPage from './src/app/Screen/pages/ChatsPage';
+import EventsPage from './src/app/Screen/pages/EventsPage';
+import SettingsPage from './src/app/Screen/pages/SettingsPage';
+import CoursesPage from './src/app/Screen/pages/CoursesPage';
 
 
 const Stack = createStackNavigator();
 
 const Navigation = () => {
   return (
-    <Stack.Navigator initialRouteName="Welcome">
+    <Stack.Navigator initialRouteName="HomeScreen">
       {/* Welcome Screen */}
       <Stack.Screen 
         name="Welcome" 
@@ -41,24 +45,9 @@ const Navigation = () => {
         options={{ headerShown: false }} 
       />
       <Stack.Screen 
-        name="HomeScreen" 
+        name="HomeScreen"
         component={HomeScreen} 
-        options={{ headerShown: false }} 
-      />
-      <Stack.Screen 
-        name="ChatScreen" 
-        component={ChatScreen} 
-        options={{ headerShown: false }} 
-      />
-      <Stack.Screen 
-        name="CommunitiesScreen" 
-        component={CommunitiesScreen}  // Communities
-        options={{ headerShown: false }} 
-      />
-      <Stack.Screen 
-        name="NotificationsScreen" 
-        component={NotificationsScreen}  // Notifications
-        options={{ headerShown: false }} 
+        options={{ headerShown: false, }} 
       />
       <Stack.Screen 
         name="ProfileScreen" 
