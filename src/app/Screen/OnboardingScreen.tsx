@@ -139,7 +139,7 @@ export default function OnboardingScreen({navigation}: ScreenProps<'Onboarding'>
         ))}
       </View>
 
-      {index === carouselData.length-1 && <TouchableOpacity onPress={()=>navigation.push('Register')} style={{...styles.buttonText}}><Text style={{fontSize: 13, fontWeight: 'bold'}}>Lets Go</Text></TouchableOpacity>}
+      {index === carouselData.length-1 && <TouchableOpacity onPress={()=>navigation.replace('Register')} style={{...styles.buttonText}}><Text style={{fontSize: 13, fontWeight: 'bold'}}>Lets Go</Text></TouchableOpacity>}
     </Animated.View>
   )
 

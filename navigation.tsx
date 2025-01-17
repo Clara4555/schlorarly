@@ -31,7 +31,7 @@ export type ScreenProps<RouteName extends keyof RootStackParamList> = NativeStac
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Navigation(){
-  return <Stack.Navigator id={undefined} initialRouteName='Welcome'>
+  return <Stack.Navigator id={undefined} screenOptions={{orientation:'portrait_up', animationDuration: 800, headerShown:false}} initialRouteName='Welcome'>
     {/* Welcome Screen */}
       <Stack.Screen
         name="Welcome" 

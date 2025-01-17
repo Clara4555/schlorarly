@@ -1,9 +1,10 @@
-import React, { useState, useCallback, useReducer } from 'react';
+import React, { useState, useCallback, useReducer, useRef } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   ImageBackground,
+  Dimensions,
 } from 'react-native';
 import {validate as validateEmail} from 'react-email-validator'
 import { ScreenProps } from '../../../navigation';
@@ -11,6 +12,13 @@ import Input from '../components/input/Input';
 import { Colors } from '../constants/Colors';
 import { Call, Lock1, Message, User } from 'iconsax-react-native';
 import CustomButton from '../components/buttons/Button';
+import { useMutation } from '@tanstack/react-query';
+import { delay } from '../utils/delay';
+import { validatePhoneNumber } from '../utils/PhoneUtils';
+import { registerAccount } from '../api/AuthApi';
+import Toast from 'react-native-toast-message';
+import { useStudent } from '../components/students/StudentProvider';
+import { Student } from '../interfaces/Student';
 
 // We create a state for the student reducer function
 type ReducerState = {
@@ -50,22 +58,183 @@ const SignUpScreen = ({navigation}: ScreenProps<'Register'>) => {
   const [{firstName, lastName, email, password, phoneNumber, confirmPassword}, dispatch] = useReducer(reducer, {firstName:'', lastName:'', confirmPassword:'', email:'', password:'', phoneNumber:''})
   const [error, setError] = useState<string>();
 
+  const {setStudent}  = useStudent()
 
-  const validateFirstSection = ()=>{
-    if(firstName.trim().length === 0){
+  const register = async ()=>{
+    console.log("Logging In")
+    await delay(1000)
+    const {data, status} = await registerAccount({firstName, lastName, email, phoneNumber, password})
+
+    if(status === 200){
+        return data;
+    }
+
+    throw new Error(data.message);
+
+
+  }
+
+
+  const validate = useMutation({
+    mutationFn: async ()=>{
+      // Wait for 2 seconds
+      await delay(2000);
+      setError('');
+
+
+      if(firstName.trim().length === 0){
         setError('First Name cannot be empty');
         return;
-    }
+      }
 
-    if(lastName.trim().length === 0){
-      setError('Last Name cannot be empty');
-      return;
-    }
+      if(lastName.trim().length === 0){
+        setError('Last Name cannot be empty');
+        return;
+      }
 
-    if(!validateEmail(email)){
-      setError("Email is not valid")
+      if(!validateEmail(email)){
+        setError("Email is not valid")
+        return;
+      }
+
+      if(phoneNumber.trim().length === 0){
+        setError('Phone Number cannot be empty');
+        return;
+      }
+
+      if(!validatePhoneNumber(phoneNumber)){
+        setError('Phone Number is invalid');
+        return;
+      }
+
+      if(password.trim().length <8){
+        setError('Password must be at least 8 digits');
+        return;
+      }
+
+      if(confirmPassword.trim() !== password.trim()){
+        setError("Passwords don't match")
+        return;
+      }
+
+      return register();
+
+
+    },
+
+    onSuccess: async ({data, message})=>{
+      Toast.show({
+        type:'success',
+        text1:"Registered",
+        text2:"Successfully registered your account"
+      })
+
+      setStudent(data as Student);
+
+      await delay(1000)
+
+      navigation.replace('Home')
+
+
+
+
+    },
+    onError: ({message})=>{
+      // if(!message || message.includes('undefined')){
+      //   return;
+      // }
+      Toast.show({
+        type:'error',
+        text1:"Failed to register",
+        text2:message
+      })
     }
-  }
+  })
+
+ 
+
+  const form = ()=>(
+    <>
+      <Text style={styles.title}>Register</Text>
+      <Text style={styles.subtitle}>Join us and get started!</Text>
+
+      {/* First Name Input */}
+      <Input 
+        placeholder='First Name'
+        value={firstName}
+        prefix={<User size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('first name')? error: null}
+        inputMode='text'
+        onChange={(value)=>dispatch({type:'firstName', value})}
+      />
+
+      {/* Last Name Input */}
+      <Input 
+        placeholder='Last Name'
+        value={lastName}
+        prefix={<User size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('last name')? error: null}
+        inputMode='text'
+        onChange={(value)=>dispatch({type:'lastName', value})}
+      />
+      
+
+      {/* Email Input */}
+      <Input 
+        placeholder='Email'
+        value={email}
+        prefix={<Message size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('email')? error: null}
+        inputMode='email'
+        onChange={(value)=>dispatch({type:'email', value})}
+      />
+
+      {/* Phone Input */}
+      <Input 
+        placeholder='Phone Number'
+        value={phoneNumber}
+        prefix={<Call size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('phone')? error: null}
+        inputMode='numeric'
+        onChange={(value)=>dispatch({type:'phoneNumber', value})}
+      />
+
+      {/* Password Input */}
+      <Input 
+        placeholder='Password'
+        value={password}
+        prefix={<Lock1 size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('password')? error: null}
+        inputMode='text'
+        isPassword
+        onChange={(value)=>dispatch({type:'password', value})}
+      />
+
+      {/* Confirm Password Input */}
+      <Input 
+        placeholder='Confirm Password'
+        value={confirmPassword}
+        prefix={<Lock1 size={20} color={Colors.secondary} />}
+        error={error && error.toLowerCase().includes('match')? error: null}
+        inputMode='text'
+        isPassword
+        onChange={(value)=>dispatch({type:'confirmPassword', value})}
+      />
+
+      
+
+      {/* Sign-Up Button */}
+      <CustomButton loading={validate.isPending} onClick={validate.mutate} title='Register' />
+
+      {/* Footer */}
+      <Text style={styles.footer}>
+        Already have an account?{' '}
+        <Text style={styles.signup} onPress={() => navigation.canGoBack()? navigation.goBack():  navigation.navigate('Login')}>
+          Login
+        </Text>
+      </Text>
+    </>
+  )
 
 
   
@@ -78,76 +247,7 @@ const SignUpScreen = ({navigation}: ScreenProps<'Register'>) => {
       resizeMode="cover"
     >
       <View style={styles.formContainer}>
-        <Text style={styles.title}>Sign Up</Text>
-        <Text style={styles.subtitle}>Join us and get started!</Text>
-
-        {/* First Name Input */}
-        <Input 
-          placeholder='First Name'
-          prefix={<User size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('first name')? error: null}
-          inputMode='text'
-          onChange={(value)=>dispatch({type:'firstName', value})}
-        />
-
-        {/* Last Name Input */}
-        <Input 
-          placeholder='Last Name'
-          prefix={<User size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('last name')? error: null}
-          inputMode='text'
-          onChange={(value)=>dispatch({type:'lastName', value})}
-        />
-        
-
-        {/* Email Input */}
-        <Input 
-          placeholder='Email'
-          prefix={<Message size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('email')? error: null}
-          inputMode='email'
-          onChange={(value)=>dispatch({type:'email', value})}
-        />
-
-        {/* Phone Input */}
-        <Input 
-          placeholder='Phone Number'
-          prefix={<Call size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('phone')? error: null}
-          inputMode='numeric'
-          onChange={(value)=>dispatch({type:'phoneNumber', value})}
-        />
-
-        {/* Password Input */}
-        <Input 
-          placeholder='Password'
-          prefix={<Lock1 size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('password')? error: null}
-          inputMode='text'
-          isPassword
-          onChange={(value)=>dispatch({type:'password', value})}
-        />
-
-        {/* Confirm Password Input */}
-        <Input 
-          placeholder='Confirm Password'
-          prefix={<Lock1 size={20} color={Colors.secondary} />}
-          error={error && error.toLowerCase().includes('match')? error: null}
-          inputMode='text'
-          isPassword
-          onChange={(value)=>dispatch({type:'confirmPassword', value})}
-        />
-
-        {/* Sign-Up Button */}
-        <CustomButton title='Register' />
-
-        {/* Footer */}
-        <Text style={styles.footer}>
-          Already have an account?{' '}
-          <Text style={styles.signup} onPress={() => navigation.navigate('Login')}>
-            Login
-          </Text>
-        </Text>
+        {form()}
       </View>
     </ImageBackground>
   );
@@ -235,7 +335,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   signup: {
-    color: '#0fa6ff',
+    color: Colors.lightPurple,
     fontWeight: 'bold',
   },
 });
