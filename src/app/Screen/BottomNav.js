@@ -74,13 +74,17 @@ const styles = StyleSheet.create({
   navItem:{
     flex: 1,
     alignItems: 'center',
-    justifyContent: 'center'
+    padding: 10,
+    backgroundColor: '#000', // Black background
+    borderTopLeftRadius: 20, // Rounded top-left corner
+    borderTopRightRadius: 20, // Rounded top-right corner
   },
 
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
-    width: '100%', // Adds vertical padding for better spacing
+    width: '90%',
+    paddingVertical: 10, // Adds vertical padding for better spacing
   },
 });
 
