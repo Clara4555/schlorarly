@@ -2,19 +2,26 @@ import React, { useEffect } from 'react';
 import { View, Image, StyleSheet, ActivityIndicator } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { useNavigation } from '@react-navigation/native';
+import { useStudent } from '../components/students/StudentProvider';
+import { ScreenProps } from '../../../navigation';
 
-const WelcomeScreens = () => {  
-  const navigation = useNavigation();
-  const [loading, setLoading] = React.useState(true); // State for loading
+
+export default function WelcomeScreen({navigation}: ScreenProps<'Welcome'>){
+  const [loading, setLoading] = React.useState(true);
+  const {student} = useStudent();
 
   useEffect(() => {
-    // Navigate to "OnboardingScreen" after 2500ms
+    // Navigate to "Onboarding" or "Home" after 4500ms
     setTimeout(() => {
-      setLoading(false); // Stop the loader after 2.5 seconds
-      navigation.navigate('OnboardingScreen'); // Navigate to the next screen
+      setLoading(false);
+
+      if(student){
+        navigation.replace('Home');
+        return;
+      }
+      navigation.replace('Onboarding');
     }, 4500);
-  }, [navigation]);
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -34,8 +41,6 @@ const WelcomeScreens = () => {
     </View>
   );
 }
-
-export default WelcomeScreens;
 
 const styles = StyleSheet.create({
   container: {
