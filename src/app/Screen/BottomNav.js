@@ -1,7 +1,7 @@
 import React from 'react';
 import {BookSaved, Calendar, Home, Setting, Message, Messages} from 'iconsax-react-native'
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; // You can also use other icon libraries if preferred
+import { MaterialIcons } from '@expo/vector-icons'; 
 import { Colors } from '../constants/Colors';
 
 const BottomNav = ({ activeTab, setActiveTab }) => {
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '90%',
-    paddingVertical: 10, // Adds vertical padding for better spacing
+    paddingVertical: 10, 
   },
 });
 

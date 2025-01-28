@@ -19,14 +19,14 @@ interface props extends ScreenProps<'Home'> {
 
 const TabContent = (props: props) => {
   const {activeTab} = props
-  const [fadeAnim] = useState(new Animated.Value(0)); // Initial opacity is 0
+  const [fadeAnim] = useState(new Animated.Value(0)); 
 
-  // Trigger fade-in animation whenever activeTab changes
+
   useEffect(() => {
     Animated.timing(fadeAnim, {
-      toValue: 1, // Fade-in to 1 (fully visible)
-      duration: 500, // Duration of the fade-in effect
-      useNativeDriver: true, // Enable native driver for better performance
+      toValue: 1, 
+      duration: 500, 
+      useNativeDriver: true, 
     }).start();
   }, [activeTab]); // Dependency array, triggers on activeTab change
 
