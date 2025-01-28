@@ -67,17 +67,17 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     borderRadius:30,
-    backgroundColor: Colors.tertiary,
-    overflow:'hidden'
+    backgroundColor: Colors.background,
+    overflow:'hidden'// Rounded top-right corner
   },
 
   navItem:{
     flex: 1,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#000', 
-    borderTopLeftRadius: 20, 
-    borderTopRightRadius: 20, 
+    backgroundColor: 'transparent', // Black background
+    borderTopLeftRadius: 20, // Rounded top-left corner
+    borderTopRightRadius: 20, // Rounded top-right corner
   },
 
   bottomNav: {

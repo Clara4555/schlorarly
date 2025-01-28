@@ -1,9 +1,9 @@
-export const distinctList = (list: any[], property:string, compareFn?:(a: any, b: any) => number): any[]=>{
+export const distinctList = <T>(list: T[], property: keyof T, compareFn?:(a: T, b: T) => number): T[]=>{
 
-    const newDistinct: any[] = [];
+    const newDistinct: T[] = [];
 
-    [...list].forEach((_channel)=>{
-      const i = newDistinct.findIndex(chat => chat[property] ===_channel[property]);
+    list.forEach((_channel)=>{
+      const i = newDistinct.findIndex(chat => chat[property] === _channel[property]);
       if(i === -1){
         newDistinct.push(_channel);
       }else{

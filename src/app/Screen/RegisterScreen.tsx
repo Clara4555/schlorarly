@@ -5,13 +5,14 @@ import {
   StyleSheet,
   ImageBackground,
   Dimensions,
+  StatusBar,
 } from 'react-native';
 import {validate as validateEmail} from 'react-email-validator'
 import { ScreenProps } from '../../../navigation';
 import Input from '../components/input/Input';
 import { Colors } from '../constants/Colors';
 import { Call, Lock1, Message, User } from 'iconsax-react-native';
-import CustomButton from '../components/buttons/Button';
+import Button from '../components/buttons/Button';
 import { useMutation } from '@tanstack/react-query';
 import { delay } from '../utils/delay';
 import { validatePhoneNumber } from '../utils/PhoneUtils';
@@ -224,7 +225,7 @@ const SignUpScreen = ({navigation}: ScreenProps<'Register'>) => {
       
 
       {/* Sign-Up Button */}
-      <CustomButton loading={validate.isPending} onClick={validate.mutate} title='Register' />
+      <Button loading={validate.isPending} onClick={validate.mutate} title='Register' />
 
       {/* Footer */}
       <Text style={styles.footer}>
@@ -246,6 +247,7 @@ const SignUpScreen = ({navigation}: ScreenProps<'Register'>) => {
       style={styles.backgroundImage}
       resizeMode="cover"
     >
+      <StatusBar barStyle='light-content' translucent backgroundColor={'transparent'} />
       <View style={styles.formContainer}>
         {form()}
       </View>

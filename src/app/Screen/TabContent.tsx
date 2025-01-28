@@ -10,8 +10,15 @@ import EventsPage from './pages/EventsPage';
 import SettingsPage from './pages/SettingsPage';
 import HomePage from './pages/HomePage';
 import CoursesPage from './pages/CoursesPage';
+import { ScreenProps } from '../../../navigation';
 
-const TabContent = ({ activeTab }) => {
+interface props extends ScreenProps<'Home'> {
+  activeTab: string,
+  
+}
+
+const TabContent = (props: props) => {
+  const {activeTab} = props
   const [fadeAnim] = useState(new Animated.Value(0)); 
 
 
@@ -21,31 +28,28 @@ const TabContent = ({ activeTab }) => {
       duration: 500, 
       useNativeDriver: true, 
     }).start();
-  }, [activeTab]); 
+  }, [activeTab]); // Dependency array, triggers on activeTab change
 
- 
-  let content;
-  switch (activeTab) {
-    case 'chat':
-      content = <ChatsPage />;
-      break;
-    case 'events':
-      content = <EventsPage />;
-      break;
-    case 'courses':
-      content = <CoursesPage />;
-      break;
-    case 'settings':
-      content = <SettingsPage />;
-      break;
-    default:
-      content = <HomePage />;
-      break;
+  // Select the content based on the activeTab value
+  const Content = ()=> {
+    switch (activeTab) {
+      case 'chat':
+        return <ChatsPage {...props} />;
+      case 'events':
+        return <EventsPage />;
+      case 'courses':
+        return <CoursesPage />;
+      case 'settings':
+        return <SettingsPage />;
+      default:
+        return <HomePage />;
+    }
   }
+  
 
   return (
     <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
-      {content}
+      <Content />
     </Animated.View>
   );
 };

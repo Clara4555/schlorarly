@@ -7,6 +7,9 @@ import LoginScreen from './src/app/Screen/LoginScreen';
 import HomeScreen from './src/app/Screen/HomeScreen';
 import ProfileScreen from './src/app/Screen/ProfileScreen';  // Profile (Settings)
 import SettingsScreen from './src/app/Screen/SettingsScreen';
+import CreateChannelScreen from './src/app/Screen/CreateChannelScreen';
+import ChatScreen from './src/app/Screen/ChatScreen';
+import { ChatsProvider } from './src/app/components/chats/ChatsProvider';
 
 type RootStackParamList = {
   Welcome: undefined,
@@ -16,6 +19,7 @@ type RootStackParamList = {
   Profile: undefined,
   Home: undefined,
   Settings: undefined,
+  CreateChannel: undefined,
   Chats: {channelId: String}
 }
 
@@ -43,7 +47,7 @@ export default function Navigation(){
       <Stack.Screen 
         name="Onboarding" 
         component={OnboardingScreen} 
-        options={{ headerShown: false }} 
+        options={{ headerShown: false,statusBarBackgroundColor:'transparent', statusBarTranslucent:true}} 
       />
       <Stack.Screen 
         name="Register" 
@@ -65,6 +69,18 @@ export default function Navigation(){
         component={ProfileScreen}  // Profile (for settings)
         options={{ headerShown: false }} 
       />
+      <Stack.Screen
+        name='CreateChannel'
+        component={CreateChannelScreen}
+        options={{headerShown: false}}
+       />
+       <Stack.Screen
+        name='Chats'
+        options={{headerShown:false,statusBarBackgroundColor:'transparent', statusBarTranslucent:true}}>
+          {(props)=> <ChatsProvider channelId={props.route.params.channelId}>
+              <ChatScreen {...props} />
+            </ChatsProvider>}
+      </Stack.Screen> 
       <Stack.Screen 
         name="Settings" 
         component={SettingsScreen}  // Settings screen
