@@ -7,6 +7,10 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import Toast, { BaseToast, ErrorToast } from 'react-native-toast-message';
 import { Colors } from './src/app/constants/Colors';
 import { View } from 'react-native';
+import { StompClientProvider } from './src/app/context/StompClientContext';
+import { ChannelsProvider } from './src/app/components/channels/ChannelsProvider';
+import "./global.css";
+
 
 const queryClient = new QueryClient();
 
@@ -33,15 +37,19 @@ const toastConfig : import('react-native-toast-message').ToastConfig = {
 export default function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <MenuProvider>  {/* Wrap your entire app with MenuProvider */}
-        <StudentProvider>
-          <View style={{backgroundColor:Colors.black, flex:1, width:'100%'}}>
-            <NavigationContainer theme={{...DefaultTheme, dark:true, colors:{...DefaultTheme.colors, card:'#000', background:'#000'}}}>
-              <Navigation />  {/* Use the Navigation component */}
-              <Toast config={toastConfig} position='top' topOffset={30} />
-            </NavigationContainer>
-          </View>
-        </StudentProvider>
+      <MenuProvider>
+        <StompClientProvider>
+          <StudentProvider>
+            <ChannelsProvider>
+              <View style={{backgroundColor:Colors.black, flex:1, width:'100%'}}>
+                <NavigationContainer theme={{...DefaultTheme, dark:true, colors:{...DefaultTheme.colors, card:'#000', background:'#000'}}}>
+                  <Navigation />  {/* Use the Navigation component */}
+                  <Toast config={toastConfig} position='top' topOffset={30} />
+                </NavigationContainer>
+              </View>
+            </ChannelsProvider>
+          </StudentProvider>
+        </StompClientProvider>
       </MenuProvider>
     </QueryClientProvider>
   );

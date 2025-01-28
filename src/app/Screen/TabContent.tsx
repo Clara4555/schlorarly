@@ -10,8 +10,15 @@ import EventsPage from './pages/EventsPage';
 import SettingsPage from './pages/SettingsPage';
 import HomePage from './pages/HomePage';
 import CoursesPage from './pages/CoursesPage';
+import { ScreenProps } from '../../../navigation';
 
-const TabContent = ({ activeTab }) => {
+interface props extends ScreenProps<'Home'> {
+  activeTab: string,
+  
+}
+
+const TabContent = (props: props) => {
+  const {activeTab} = props
   const [fadeAnim] = useState(new Animated.Value(0)); // Initial opacity is 0
 
   // Trigger fade-in animation whenever activeTab changes
@@ -24,28 +31,25 @@ const TabContent = ({ activeTab }) => {
   }, [activeTab]); // Dependency array, triggers on activeTab change
 
   // Select the content based on the activeTab value
-  let content;
-  switch (activeTab) {
-    case 'chat':
-      content = <ChatsPage />;
-      break;
-    case 'events':
-      content = <EventsPage />;
-      break;
-    case 'courses':
-      content = <CoursesPage />;
-      break;
-    case 'settings':
-      content = <SettingsPage />;
-      break;
-    default:
-      content = <HomePage />;
-      break;
+  const Content = ()=> {
+    switch (activeTab) {
+      case 'chat':
+        return <ChatsPage {...props} />;
+      case 'events':
+        return <EventsPage />;
+      case 'courses':
+        return <CoursesPage />;
+      case 'settings':
+        return <SettingsPage />;
+      default:
+        return <HomePage />;
+    }
   }
+  
 
   return (
     <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
-      {content}
+      <Content />
     </Animated.View>
   );
 };

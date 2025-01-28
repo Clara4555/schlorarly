@@ -4,13 +4,14 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
+  StatusBar,
 } from 'react-native';
 import { MaterialCommunityIcons } from 'react-native-vector-icons';
 import {validate as validateEmail} from 'react-email-validator'
 import Input from '../components/input/Input';
 import { ScreenProps } from '../../../navigation';
 import { Colors } from '../constants/Colors';
-import CustomButton from '../components/buttons/Button';
+import Button from '../components/buttons/Button';
 import { useStudent } from '../components/students/StudentProvider';
 import { useMutation } from '@tanstack/react-query';
 import { User, Message, Call, Lock1 } from 'iconsax-react-native';
@@ -111,7 +112,7 @@ const LoginScreen = ({ navigation }: ScreenProps<'Login'>) => {
 
       await delay(1000)
 
-      navigation.replace('Home')
+      navigation.popTo('Home')
     },
     onError: ({message})=>{
       if(!message || message.includes('undefined')){
@@ -158,7 +159,7 @@ const LoginScreen = ({ navigation }: ScreenProps<'Login'>) => {
       
 
       {/* Sign-Up Button */}
-      <CustomButton style={{marginTop: 20}} loading={validate.isPending} onClick={validate.mutate} title='Login' />
+      <Button style={{marginTop: 20}} loading={validate.isPending} onClick={validate.mutate} title='Login' />
 
       {/* Footer */}
       <Text style={styles.footer}>
@@ -175,6 +176,7 @@ const LoginScreen = ({ navigation }: ScreenProps<'Login'>) => {
       style={styles.backgroundImage}
       resizeMode="cover"
     >
+      <StatusBar barStyle='light-content' translucent backgroundColor={'transparent'} />
       <View style={styles.formContainer}>
         {form()}
       </View>

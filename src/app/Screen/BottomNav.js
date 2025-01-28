@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 10,
     borderRadius:30,
-    backgroundColor: Colors.tertiary,
+    backgroundColor: Colors.background,
     overflow:'hidden'// Rounded top-right corner
   },
 
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: '#000', // Black background
+    backgroundColor: 'transparent', // Black background
     borderTopLeftRadius: 20, // Rounded top-left corner
     borderTopRightRadius: 20, // Rounded top-right corner
   },

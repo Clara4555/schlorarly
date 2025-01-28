@@ -4,13 +4,18 @@ import { StatusBar } from 'expo-status-bar';
 import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
 import { useStudent } from '../components/students/StudentProvider';
 import { ScreenProps } from '../../../navigation';
+import { getStudent } from '../utils/Storage';
 
 
 export default function WelcomeScreen({navigation}: ScreenProps<'Welcome'>){
   const [loading, setLoading] = React.useState(true);
-  const {student} = useStudent();
+  const {student, setStudent} = useStudent();
 
   useEffect(() => {
+    getStudent().then(_student =>{
+        setStudent(_student);
+        
+      })
     // Navigate to "Onboarding" or "Home" after 4500ms
     setTimeout(() => {
       setLoading(false);
@@ -20,6 +25,8 @@ export default function WelcomeScreen({navigation}: ScreenProps<'Welcome'>){
         return;
       }
       navigation.replace('Onboarding');
+
+      
     }, 4500);
   }, []);
 

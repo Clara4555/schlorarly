@@ -15,7 +15,7 @@ interface props{
     // invert?: boolean,
 }
 
-export default function CustomButton(buttonProps:props) {
+export default function Button(buttonProps:props) {
 
     const  {title, loading, onClick, disabled, negative, style, gradient, outlined} = buttonProps;
 
@@ -33,7 +33,7 @@ export default function CustomButton(buttonProps:props) {
         }
     })
   return (
-    <TouchableHighlight underlayColor={Colors.background} onPress={onClick} disabled={disabled} style={[styles.button, style]}>
+    <TouchableHighlight underlayColor={Colors.background} onPress={onClick} disabled={disabled || loading} style={[styles.button, style]}>
         <View style={{width:'100%', flex:1, alignItems:'center', justifyContent:'center'}}>
             {!loading && <Text style={{color:outlined? negative? 'red': Colors.purple : 'white', fontWeight:'600',}}>{title}</Text>}
             {loading && <ActivityIndicator size={14} color={outlined? negative? 'red': Colors.purple : 'white'} />}

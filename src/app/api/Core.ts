@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const baseUrl = 'https://scholarly-admin-backend.onrender.com/scholarly/api/v1/';
 
-export const websocket_url = 'wss://scholarly-admin-backend.onrender.com/scholarly-websocket-endpoint/';
+export const websocket_url = 'wss://scholarly-admin-backend.onrender.com/scholarly-websocket-endpoint';
 
 
 const headers = {"Content-Type": 'application/json'};
