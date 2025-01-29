@@ -10,6 +10,7 @@ import SettingsScreen from './src/app/Screen/SettingsScreen';
 import CreateChannelScreen from './src/app/Screen/CreateChannelScreen';
 import ChatScreen from './src/app/Screen/ChatScreen';
 import { ChatsProvider } from './src/app/components/chats/ChatsProvider';
+import { Colors } from './src/app/constants/Colors';
 
 type RootStackParamList = {
   Welcome: undefined,
@@ -35,7 +36,7 @@ export type ScreenProps<RouteName extends keyof RootStackParamList> = NativeStac
 export const Stack = createNativeStackNavigator<RootStackParamList>();
 
 export default function Navigation(){
-  return <Stack.Navigator id={undefined} screenOptions={{orientation:'portrait_up', animationDuration: 800, headerShown:false}} initialRouteName='Welcome'>
+  return <Stack.Navigator id={undefined} screenOptions={{orientation:'portrait_up', navigationBarColor:Colors.black, animationDuration: 800, headerShown:false}} initialRouteName='Welcome'>
     {/* Welcome Screen */}
       <Stack.Screen
         name="Welcome" 
@@ -47,7 +48,7 @@ export default function Navigation(){
       <Stack.Screen 
         name="Onboarding" 
         component={OnboardingScreen} 
-        options={{ headerShown: false,statusBarBackgroundColor:'transparent', statusBarTranslucent:true}} 
+        options={{ headerShown: false, statusBarBackgroundColor:'transparent', statusBarTranslucent:true}} 
       />
       <Stack.Screen 
         name="Register" 
@@ -76,7 +77,7 @@ export default function Navigation(){
        />
        <Stack.Screen
         name='Chats'
-        options={{headerShown:false,statusBarBackgroundColor:'transparent', statusBarTranslucent:true}}>
+        options={{headerShown:false,statusBarBackgroundColor:'transparent', navigationBarColor:Colors.background , statusBarTranslucent:true}}>
           {(props)=> <ChatsProvider channelId={props.route.params.channelId}>
               <ChatScreen {...props} />
             </ChatsProvider>}

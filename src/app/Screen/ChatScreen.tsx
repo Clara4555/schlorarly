@@ -27,6 +27,8 @@ import { Channel } from '../interfaces/Channel';
 import { useStompClient } from '../context/StompClientContext';
 import { markChatAsRead, sendChat } from '../api/ChatApi';
 import Toast from 'react-native-toast-message';
+import {BottomSheet} from '../components/modals/BottomSheet';
+import BottomSheetRefType from '../components/modals/BottomSheetRefType';
 
 const ChatScreen = (props: ScreenProps<'Chats'>) => {
   const { top } = useSafeAreaInsets();
@@ -40,6 +42,7 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
   const [thumbnailBlob, setThumbnailBlob] = useState<Blob | null>(null);
 
   const listRef = useRef<FlatList>(null)
+  const bottomSheetRef = useRef<BottomSheetRefType<string>>(null);
 
   const channel = useChannel(channelId ?? '');
   const {publish} = useStompClient();
@@ -248,7 +251,9 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
             className='flex-1 select-text bg-transparent text-white text-[13px]'
           />
 
-          {text.trim().length <=0 && !file && <Paperclip size={28} color={Colors.secondary} />}
+          {text.trim().length <=0 && !file && <TouchableOpacity onPress={()=>bottomSheetRef.current?.open()}>
+            <Paperclip size={28} color={Colors.secondary} />
+          </TouchableOpacity>}
 
           {(text.trim().length > 0 || file) && <View className={`text-purple cursor-pointer transition-all ease duration-500 flex items-center justify-center w-[28px] opacity-100`}>
             {!sendMessageMutation.isPending && <Send color={Colors.purple} onPress={()=>sendMessageMutation.mutate()} variant='Bold' size={28} />}
@@ -258,6 +263,18 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
         </View>
 
       </View>
+
+      <BottomSheet
+        ref={bottomSheetRef}
+        contentBackground={Colors.background}
+
+        >
+          <View className='flex flex-col'>
+            <Text className='color-white font-semibold text-[16px]'>What would you like to upload</Text>
+
+          </View>
+
+        </BottomSheet>
 
     </View>
   );
