@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Text, StyleSheet, Dimensions, TouchableOpacity, View, Animated, Pressable } from 'react-native';
+import { Text, StyleSheet, Dimensions, TouchableOpacity, View, Animated, Pressable, StatusBar } from 'react-native';
 import Onboarding from 'react-native-onboarding-swiper';
 import LottieView from 'lottie-react-native';
 import Carousel from 'react-native-reanimated-carousel';
@@ -65,6 +65,7 @@ export default function OnboardingScreen({navigation}: ScreenProps<'Onboarding'>
 
     return (
       <View style={{width: '100%', flex: 1, flexDirection:'column'}}>
+        <StatusBar barStyle='light-content' translucent backgroundColor={'transparent'} />
         <View style={{width: '100%', flex:3, alignItems: 'center', justifyContent: 'center'}}>
             <LottieView 
               source={item.lottie}

@@ -3,23 +3,23 @@ import { StyleSheet, View, Text } from 'react-native';
 import BottomNav from './BottomNav';
 import TabContent from './TabContent';
 import { ChannelsProvider } from '../components/channels/ChannelsProvider';
+import { ScreenProps } from '../../../navigation';
 
-const HomeScreen = () => {
+const HomeScreen = (props : ScreenProps<'Home'>) => {
   const [activeTab, setActiveTab] = useState('home'); // Default tab
 
   return (
-    <ChannelsProvider>
-      <View style={styles.container}>
-        <TabContent activeTab={activeTab} />
+    <View style={styles.container}>
+        <TabContent {...props} activeTab={activeTab} />
           {/* Bottom navigation bar */}
         <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
-      </View>
-    </ChannelsProvider>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    width: '100%',
     flex: 1,
     justifyContent: 'center',
     alignItems:'center',
