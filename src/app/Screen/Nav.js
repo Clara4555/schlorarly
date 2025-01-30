@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { StyleSheet, View } from 'react-native';
 import BottomNav from './BottomNav';
 import TabContent from './TabContent';
 
@@ -8,8 +8,9 @@ const Nav = () => {
 
   return (
     <View style={styles.container}>
+      {/* Tab Content including Header */}
       <TabContent activeTab={activeTab} />
-        {/* Bottom navigation bar */}
+      {/* Bottom navigation bar */}
       <BottomNav activeTab={activeTab} setActiveTab={setActiveTab} />
     </View>
   );
@@ -20,7 +21,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#2C2F33',
   },
-  
 });
 
 export default Nav;
