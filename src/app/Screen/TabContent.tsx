@@ -11,6 +11,7 @@ import SettingsPage from './pages/SettingsPage';
 import HomePage from './pages/HomePage';
 import CoursesPage from './pages/CoursesPage';
 import { ScreenProps } from '../../../navigation';
+import AnnouncementPage from './pages/AnnouncementPage';
 
 interface props extends ScreenProps<'Home'> {
   activeTab: string,
@@ -37,12 +38,14 @@ const TabContent = (props: props) => {
         return <ChatsPage {...props} />;
       case 'events':
         return <EventsPage />;
+      case 'announcement':
+      return <AnnouncementPage />;
       case 'courses':
         return <CoursesPage />;
       case 'settings':
         return <SettingsPage />;
       default:
-        return <HomePage />;
+        return <AnnouncementPage />;
     }
   }
   
