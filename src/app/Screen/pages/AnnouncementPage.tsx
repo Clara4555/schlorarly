@@ -1,81 +1,77 @@
 import React from 'react';
-import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
+import { View, Text, ScrollView, Image, StyleSheet, StatusBar, FlatList } from 'react-native';
 import { announcementDummyData } from '../../data/announcements';
+import AnnouncementItem from '../../components/announcements/AnnouncementItem';
+import BottomBarSpace from '../../components/BottomBarSpace';
+import LottieView from 'lottie-react-native';
+import { ScreenProps } from '../../../../navigation';
+import { useAnnouncements } from '../../components/announcements/AnnouncementsProvider';
 
-export default function AnnouncementPage() {
-  const announcements = announcementDummyData();
+export default function AnnouncementPage({navigation, route}: ScreenProps<'Home'>) {
+  const {announcements} = useAnnouncements();
+
+  const EmptyLayout = ()=>(
+      <>
+        <LottieView
+            source={require('../../assets/animations/add-chat.json')}
+            loop
+            style={{width:'55%', aspectRatio:1}}
+            autoPlay
+          />
+        <Text style={{color:'white', textAlign:'center', lineHeight:24}}>{"No announcements yet"}</Text>
+      </>
+  )
+  
+  const AnnouncementsList = ()=>(
+    <FlatList
+      className='w-full pt-4'
+      data={announcements}
+      showsVerticalScrollIndicator={false}
+      alwaysBounceVertical
+      keyExtractor={(announcement, index) => index.toString()}
+      ListFooterComponent={BottomBarSpace}
+      ItemSeparatorComponent={()=><View className='w-full h-[1px] bg-secondary opacity-20' />}
+      renderItem={({item: announcement})=>(
+        <AnnouncementItem announcement={announcement} navigation={navigation} route={route}  />
+      )}
+    />
+  )
 
   return (
     <View style={styles.container}>
+      <StatusBar barStyle='light-content' translucent backgroundColor={'transparent'} />
       <Text style={styles.header}>Announcements</Text>
-      <ScrollView contentContainerStyle={styles.scrollView}>
-        {announcements.map((announcement) => (
-          <View key={announcement.id} style={styles.announcementCard}>
-            {announcement.announcementPhoto && (
-              <Image source={{ uri: announcement.announcementPhoto }} style={styles.announcementImage} />
-            )}
-            <Text style={styles.title}>{announcement.announcementTitle}</Text>
-            <Text style={styles.details}>{announcement.announcementDescription}</Text>
-            <Text style={styles.date}>{new Date(announcement.createdTime).toDateString()}</Text>
-          </View>
-        ))}
-      </ScrollView>
+      
+       <View style={{width:'100%', flex:1, alignItems:'center', justifyContent:'center', gap:20}}>
+          {announcements.length <=0 && <EmptyLayout />}
+          {announcements.length > 0 && <AnnouncementsList />}
+        </View>
+
+      {/* Bottom Bar Size */}
+      {announcements.length <=0 && <BottomBarSpace />}
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
+    width:'100%',
     flex: 1,
-    backgroundColor: '#1f1f1f',
-    paddingTop: 20,
+    paddingTop:50,
+    paddingHorizontal:25,
   },
   header: {
     fontSize: 24,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    marginBottom: 30, // Keep the margin for spacing below the header
-    marginTop: 50, // Added marginTop to push the header down
+    fontWeight: '800',
+    textAlign: 'left',
+    marginBottom: 23, // Keep the margin for spacing below the header
     color: '#ffffff',
-    textShadowColor: '#000',
-    textShadowOffset: { width: 1, height: 1 },
-    textShadowRadius: 5,
+    // textShadowColor: '#000',
+    // textShadowOffset: { width: 1, height: 1 },
+    // textShadowRadius: 5,
   },
   scrollView: {
-    paddingHorizontal: 15,
     paddingBottom: 20,
   },
-  announcementCard: {
-    backgroundColor: '#1E1E1E',
-    padding: 15,
-    marginBottom: 15,
-    borderRadius: 10,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.3,
-    shadowRadius: 5,
-    elevation: 5,
-  },
-  announcementImage: {
-    width: '100%',
-    height: 200,
-    borderRadius: 8,
-    marginBottom: 15,
-  },
-  title: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    color: '#34495E',
-    marginBottom: 5,
-  },
-  details: {
-    fontSize: 14,
-    color: 'white',
-    marginBottom: 10,
-  },
-  date: {
-    fontSize: 12,
-    color: '#95A5A6',
-    textAlign: 'right',
-  },
+  
 });

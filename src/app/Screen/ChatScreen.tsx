@@ -12,7 +12,7 @@ import {
 import { ScreenProps } from '../../../navigation';
 import CircleImage from '../components/images/CircleImage';
 import { useChannel } from '../components/channels/ChannelsProvider';
-import { ArrowDown2, Call, ChartCircle, Paperclip, Send } from 'iconsax-react-native';
+import { ArrowDown2, ArrowLeft, Call, ChartCircle, Image as ImageIIcon, Paperclip, Send } from 'iconsax-react-native';
 import { StatusBar } from 'react-native';
 import { useStudent } from '../components/students/StudentProvider';
 import { TextInput } from 'react-native';
@@ -48,6 +48,12 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
   const {publish} = useStompClient();
   const {student} = useStudent();
   const {chats} = useChats();
+
+  useEffect(()=>{
+    if(listRef.current){
+      listRef.current.scrollToEnd({animated:false});
+    }
+  }, [listRef.current])
 
   useEffect(()=>{
     console.log("Chats Length is", chats.length);
@@ -115,10 +121,11 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
       <StatusBar translucent barStyle='light-content' backgroundColor={'transparent'}  />
       {/* Header */}
       <View style={{marginTop: top}} className='w-full px-8 py-4 flex-row flex-center gap-4'>
+        <ArrowLeft onPress={navigation.goBack} color='#fff' />
         <CircleImage size={47} textSize='14' color={channel.color} name={channel.channelName} url={channel.channelProfile} />
         <View className='flex-1 ml-2 justify-center'>
-          <Text className='text-white text-[16px] font-semibold'>{channel.channelName}</Text>
-          <Text className='text-white font-thin text-[12px]'>{channel.members.length} member{channel.members.length !=1 && 's'}</Text>
+          <Text numberOfLines={1} className='text-white text-[16px] font-semibold'>{channel.channelName}</Text>
+          <Text numberOfLines={1} className='text-white font-thin text-[12px]'>{channel.members.length} member{channel.members.length !=1 && 's'}</Text>
         </View>
         <Call
           variant='Bold'
@@ -267,10 +274,46 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
       <BottomSheet
         ref={bottomSheetRef}
         contentBackground={Colors.background}
-
         >
-          <View className='flex flex-col'>
-            <Text className='color-white font-semibold text-[16px]'>What would you like to upload</Text>
+          <View className='flex flex-col gap-2'>
+
+            <Text className='color-white font-semibold self-center text-[16px]'>What would you like to upload?</Text>
+
+
+            <View className='w-[70%] self-center mt-4 flex flex-row flex-wrap'>
+
+              <View className='items-center w-[50%] gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-purple rounded-circle'>
+                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Image</Text>
+              </View>
+              <View className='items-center w-[50%] gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
+                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Image</Text>
+              </View>
+
+              <View className='items-center w-[50%] mt-4 gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
+                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Image</Text>
+              </View>
+              <View className='items-center w-[50%] mt-4 gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
+                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Image</Text>
+              </View>
+
+            </View>
+
 
           </View>
 

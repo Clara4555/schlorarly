@@ -31,9 +31,9 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
       { /* Announcement Tab */}
         <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('announcements')}>
           <DirectNotification
-            variant={activeTab === 'events' ? 'Bold' : 'Linear'}
+            variant={activeTab === 'announcements' ? 'Bold' : 'Linear'}
             size={25}
-            color={activeTab === 'events' ?  Colors.purple : 'white'}
+            color={activeTab === 'announcements' ?  Colors.purple : 'white'}
           />
         </TouchableOpacity>
         

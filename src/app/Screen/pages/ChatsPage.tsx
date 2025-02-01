@@ -17,19 +17,7 @@ export default function ChatsPage(props: ScreenProps<'Home'>) {
   const {student} = useStudent();
   const {channels} = useChannels();
 
-  const styles = StyleSheet.create({
-    container:{
-      width:'100%',
-      minHeight:'100%',
-      paddingHorizontal:25,
-      paddingTop:50,
-      gap:13,
-      alignItems:'center',
-      
-    }
-    
-
-  });
+  
 
   const SearchBar = ()=>{
     return (
@@ -66,7 +54,7 @@ export default function ChatsPage(props: ScreenProps<'Home'>) {
         <ChannelItem channel={channel.item} navigation={navigation} route={route} />
       )}
     />
-    )
+  )
 
   return (
     <View style={styles.container}>
@@ -96,3 +84,16 @@ export default function ChatsPage(props: ScreenProps<'Home'>) {
     </View>
   )
 }
+
+const styles = StyleSheet.create({
+  container:{
+    width:'100%',
+    minHeight:'100%',
+    paddingHorizontal:25,
+    paddingTop:50,
+    gap:13,
+    alignItems:'center',
+  }
+  
+
+});

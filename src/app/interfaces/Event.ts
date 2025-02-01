@@ -2,8 +2,6 @@ import { ReactNode } from "react";
 import { Member } from "./Member";
 
 export interface Event {
-    announcementTitle: ReactNode;
-    isAttending: any;
     id: string;
     eventTitle: string;
     eventDescription: string;

@@ -11,6 +11,7 @@ import CreateChannelScreen from './src/app/Screen/CreateChannelScreen';
 import ChatScreen from './src/app/Screen/ChatScreen';
 import { ChatsProvider } from './src/app/components/chats/ChatsProvider';
 import { Colors } from './src/app/constants/Colors';
+import AnnouncementScreen from './src/app/Screen/AnnouncementScreen';
 
 type RootStackParamList = {
   Welcome: undefined,
@@ -19,6 +20,7 @@ type RootStackParamList = {
   Login: undefined,
   Profile: undefined,
   Home: undefined,
+  Announcement: {announcementId: string}
   Settings: undefined,
   CreateChannel: undefined,
   Chats: {channelId: String}
@@ -82,6 +84,11 @@ export default function Navigation(){
               <ChatScreen {...props} />
             </ChatsProvider>}
       </Stack.Screen> 
+      <Stack.Screen
+        name='Announcement'
+        component={AnnouncementScreen}
+        options={{headerShown:false,statusBarBackgroundColor:'transparent', navigationBarColor:Colors.background , statusBarTranslucent:true}}
+      />  
       <Stack.Screen 
         name="Settings" 
         component={SettingsScreen}  // Settings screen
