@@ -9,13 +9,13 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
     <View style={styles.navContainer}>
       <View style={styles.bottomNav}>
         {/* Home Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('home')}>
+        {/* <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('home')}>
           <Home
             variant={activeTab === 'home' ? 'Bold' : 'Linear'}
             size={25}
             color={activeTab === 'home' ?  Colors.purple: 'white'}
           />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
 
         {/* Chat Tab */}
         <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('chat')}>
