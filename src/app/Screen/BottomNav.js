@@ -1,5 +1,5 @@
 import React from 'react';
-import {BookSaved, Calendar, Home, Setting, Message, Messages} from 'iconsax-react-native'
+import {BookSaved, Calendar, Home, Setting, Message, Messages, DirectNotification} from 'iconsax-react-native'
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
 import { MaterialIcons } from '@expo/vector-icons'; 
 import { Colors } from '../constants/Colors';
@@ -8,14 +8,7 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
   return (
     <View style={styles.navContainer}>
       <View style={styles.bottomNav}>
-        {/* Home Tab */}
-        {/* <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('home')}>
-          <Home
-            variant={activeTab === 'home' ? 'Bold' : 'Linear'}
-            size={25}
-            color={activeTab === 'home' ?  Colors.purple: 'white'}
-          />
-        </TouchableOpacity> */}
+        
 
         {/* Chat Tab */}
         <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('chat')}>
@@ -35,6 +28,15 @@ const BottomNav = ({ activeTab, setActiveTab }) => {
           />
         </TouchableOpacity>
 
+      { /* Announcement Tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('announcements')}>
+          <DirectNotification
+            variant={activeTab === 'events' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'events' ?  Colors.purple : 'white'}
+          />
+        </TouchableOpacity>
+        
         {/* Courses Tab */}
         <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('courses')}>
           <BookSaved
