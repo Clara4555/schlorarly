@@ -11,6 +11,7 @@ import { StompClientProvider } from './src/app/context/StompClientContext';
 import { ChannelsProvider } from './src/app/components/channels/ChannelsProvider';
 import "./global.css";
 import { GestureHandlerRootView } from 'react-native-gesture-handler';
+import { AnnouncementsProvider } from './src/app/components/announcements/AnnouncementsProvider';
 
 
 const queryClient = new QueryClient();
@@ -42,14 +43,16 @@ export default function App() {
         <StompClientProvider>
           <StudentProvider>
             <ChannelsProvider>
-              <GestureHandlerRootView style={{flex:1, width:'100%'}}>
-                <View style={{backgroundColor:Colors.black, flex:1, width:'100%'}}>
-                  <NavigationContainer theme={{...DefaultTheme, dark:true, colors:{...DefaultTheme.colors, card:'#000', background:'#000'}}}>
-                    <Navigation />  {/* Use the Navigation component */}
-                    <Toast config={toastConfig} position='top' topOffset={30} />
-                  </NavigationContainer>
-                </View>
-              </GestureHandlerRootView>
+              <AnnouncementsProvider>
+                <GestureHandlerRootView style={{flex:1, width:'100%'}}>
+                  <View style={{backgroundColor:Colors.black, flex:1, width:'100%'}}>
+                    <NavigationContainer theme={{...DefaultTheme, dark:true, colors:{...DefaultTheme.colors, card:'#000', background:'#000'}}}>
+                      <Navigation />  {/* Use the Navigation component */}
+                      <Toast config={toastConfig} position='top' topOffset={30} />
+                    </NavigationContainer>
+                  </View>
+                </GestureHandlerRootView>
+              </AnnouncementsProvider>
             </ChannelsProvider>
           </StudentProvider>
         </StompClientProvider>
