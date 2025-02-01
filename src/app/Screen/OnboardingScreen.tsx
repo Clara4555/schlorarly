@@ -75,11 +75,11 @@ export default function OnboardingScreen({navigation}: ScreenProps<'Onboarding'>
             />
         </View>
         <View style={{width: '100%', flex:1, gap: '20', paddingHorizontal: 24, alignItems:'center', flexDirection:'column'}}>
-          <Text style={{fontFamily: 'Raleway', fontSize:20, fontWeight: 'bold', color:'black', textAlign:'center'}}>
+          <Text className='text-white' style={{fontFamily: 'Raleway', fontSize:20, fontWeight: 'bold', textAlign:'center'}}>
             {item.title}
           </Text>
 
-          <Text style={{fontFamily: 'Raleway', fontSize:15, fontWeight: '400', color:'black0', textAlign:'center'}}>
+          <Text className='text-white' style={{fontFamily: 'Raleway', fontSize:15, fontWeight: '400',  textAlign:'center'}}>
             {item.subtitle}
           </Text>
 

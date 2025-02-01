@@ -3,6 +3,6 @@ import React from 'react'
 
 export default function BottomBarSpace() {
   return (
-    <View style={{height:85, width:'100%'}} />
+    <View style={{height:85+20, width:'100%'}} />
   )
 }

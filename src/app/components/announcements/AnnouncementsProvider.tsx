@@ -108,7 +108,7 @@ export function AnnouncementsProvider({children}: {children: React.JSX.Element})
             }
         });
 
-        publish(`/scholarly/getChannels/${student.id}`)
+        publish(`/scholarly/getAnnouncements/${student.id}`)
 
     }, [student])
     

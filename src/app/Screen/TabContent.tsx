@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
 import ChatScreen from './ChatScreen';
-import CommunitiesScreen from './CommunitiesScreen';
 import SettingsScreen from './SettingsScreen';
 import NotificationsScreen from './NotificationsScreen';
 import { Colors } from '../constants/Colors';
@@ -34,18 +33,18 @@ const TabContent = (props: props) => {
   // Select the content based on the activeTab value
   const Content = ()=> {
     switch (activeTab) {
-      case 'chat':
-        return <ChatsPage {...props} />;
+      // case 'chat':
+       
       case 'events':
         return <EventsPage />;
-      case 'announcement':
-      return <AnnouncementPage />;
+      case 'announcements':
+      return <AnnouncementPage {...props} />;
       case 'courses':
         return <CoursesPage />;
       case 'settings':
         return <SettingsPage />;
       default:
-        return <AnnouncementPage />;
+        return <ChatsPage {...props} />;
     }
   }
   

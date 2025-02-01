@@ -5,9 +5,10 @@ import AnnouncementItem from '../../components/announcements/AnnouncementItem';
 import BottomBarSpace from '../../components/BottomBarSpace';
 import LottieView from 'lottie-react-native';
 import { ScreenProps } from '../../../../navigation';
+import { useAnnouncements } from '../../components/announcements/AnnouncementsProvider';
 
 export default function AnnouncementPage({navigation, route}: ScreenProps<'Home'>) {
-  const announcements = announcementDummyData();
+  const {announcements} = useAnnouncements();
 
   const EmptyLayout = ()=>(
       <>
