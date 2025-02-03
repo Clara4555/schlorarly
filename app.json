@@ -1,0 +1,36 @@
+{
+  "expo": {
+    "name": "scholarly",
+    "slug": "snack-f4813b5e-7ea9-4b00-956e-cbcf0dfb5c8e",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/scholarly-app-icon.png",
+    "userInterfaceStyle": "dark",
+    "newArchEnabled": true,
+    "splash": {
+      "image": "./assets/scholarly-app-icon.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#1f1f1f"
+    },
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/scholarly-app-icon.png",
+        "backgroundColor": "tranparent"
+      },
+      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
+      "package": "com.niit.scholarly"
+    },
+    "web": {
+      "favicon": "./assets/favicon.png",
+      "bundler": "metro"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "b51ab897-3c40-4325-9e35-d6adbc97b6d5"
+      }
+    }
+  }
+}
