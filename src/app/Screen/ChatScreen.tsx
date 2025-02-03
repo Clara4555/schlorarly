@@ -1,8 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { heightPercentageToDP as hp, widthPercentageToDP as wp } from 'react-native-responsive-screen';
-import { View, Text, StyleSheet, Platform, ActivityIndicator, FlatList, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';  
-import { Image } from 'expo-image';
+import { View, Text, Image, StyleSheet, Platform, ActivityIndicator, FlatList, TouchableOpacity, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import {
   Menu,
   MenuOptions,
@@ -12,7 +10,7 @@ import {
 import { ScreenProps } from '../../../navigation';
 import CircleImage from '../components/images/CircleImage';
 import { useChannel } from '../components/channels/ChannelsProvider';
-import { ArrowDown2, ArrowLeft, Call, ChartCircle, Image as ImageIIcon, Paperclip, Send } from 'iconsax-react-native';
+import { ArrowDown2, ArrowLeft, Call, ChartCircle, CloseCircle, DocumentText, Image as ImageIIcon, MusicPlay, Paperclip, PlayCircle, Send, VideoPlay } from 'iconsax-react-native';
 import { StatusBar } from 'react-native';
 import { useStudent } from '../components/students/StudentProvider';
 import { TextInput } from 'react-native';
@@ -22,20 +20,22 @@ import { delay } from '../utils/delay';
 import { useChats } from '../components/chats/ChatsProvider';
 import ChatItem from '../components/chats/ChatItem';
 import { Member } from '../interfaces/Member';
-import { Chat } from '../interfaces/Chat';
+import { AttachmentType, Chat } from '../interfaces/Chat';
 import { Channel } from '../interfaces/Channel';
 import { useStompClient } from '../context/StompClientContext';
-import { markChatAsRead, sendChat } from '../api/ChatApi';
+import { markChatAsRead, sendAttachment, sendChat } from '../api/ChatApi';
 import Toast from 'react-native-toast-message';
 import {BottomSheet} from '../components/modals/BottomSheet';
+import * as DocumentPicker from 'expo-document-picker';
 import BottomSheetRefType from '../components/modals/BottomSheetRefType';
+import LottieView from 'lottie-react-native';
 
 const ChatScreen = (props: ScreenProps<'Chats'>) => {
   const { top } = useSafeAreaInsets();
   const {navigation, route} = props;
   const {channelId} = route.params;
 
-  const [file, setFile] = useState<File | null>(null);
+  const [file, setFile] = useState<DocumentPicker.DocumentPickerAsset | null>(null);
   const [text, setText] = useState('');
   const [canScroll, setCanScroll] = useState(true);
   const [imageSrc, setImageSrc] = useState('');
@@ -81,18 +81,27 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
 
   }
 
+  const uriToFile = async (uri: string, name: string, mimeType: string): Promise<Blob> => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+    return blob;
+  };
+  
+
 
   const sendMessageMutation = useMutation({
     mutationFn: async()=>{
       const chat  = {message: text.trim() === ''? null:text, senderId:student.id} as Chat;
 
-      // if(file){
-      //   chat.attachmentType = selectType;
-      // }
+      if(file){
+        chat.attachmentType = fileTypes().toLowerCase() as AttachmentType;
+      }
 
       console.log(chat);
 
-      const send = await sendChat(channelId.toString(), chat);
+      const _file = file?await uriToFile(file.uri, file.name, file.mimeType):null;
+
+      const send = await (file? sendAttachment(channelId.toString(), _file, chat, null) : sendChat(channelId.toString(), chat));
 
       if(send.status === 200){
         return send.data;
@@ -103,6 +112,8 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
       throw new Error(send.data.message);
     },
     onSuccess: ()=>{
+      setFile(null)
+      setThumbnailBlob(null)
       setText('');
     },
     onError: ({message})=>{
@@ -113,6 +124,81 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
       })
     }
   })
+
+  const markChat = (chat: Chat)=>{
+
+    const readChat = {
+      ...chat,
+      readReceipt: [...chat.readReceipt, student.id]
+    } as Chat;
+    const readChannel = {
+      ...channel,
+      latestMessage: readChat,
+      unreadMessages:0,
+    } as Channel
+
+    // We send to the user's chat & channel websocket that he's read the chat
+    publish(`/chats/${channelId}`,JSON.stringify({
+      message:'Chat Marked As Read',
+      data: readChat
+    }))
+    
+    publish(`/channels/${student?.id}`, JSON.stringify({
+        message:"Chat Marked As Read",
+        data: readChannel
+    }))
+
+
+    markChatAsRead(channelId?.toString(),chat.id, student.id )
+  }
+
+  const fileTypes = (selectType?: AttachmentType)=> {
+
+    if(!selectType && file){
+      if(file.mimeType?.startsWith("*")){
+        return 'Document';
+      }
+
+      const type = file.mimeType?.substring(0, file.mimeType?.indexOf("/"));
+
+      return type.charAt(0).toUpperCase() + type.substring(1);
+    }
+
+    if(selectType === 'document'){
+      return '*/*';
+    }
+
+    return `${selectType}/*`;
+  }
+
+  const getFileSize = ()=>{
+    if(!file) return "";
+
+    const size = file.size;
+
+    const mb = size >= (1024 * 1024);
+
+    const mbString = `${(size / (1024 * 1024)).toFixed(0)}MB`;
+    const kbString = `${(size / (1024)).toFixed(0)}KB`;
+
+    return mb ? mbString : kbString;
+  }
+
+  const pickFile = async (type: AttachmentType)=>{
+    const result = await DocumentPicker.getDocumentAsync({
+      type:fileTypes(type),
+      multiple:false
+    });
+
+    bottomSheetRef?.current.close();
+
+    if(result.canceled || (result.assets ?? []).length === 0){
+      return;
+    }
+
+    const _file = result.assets[0];
+    setFile(_file);
+  }
 
 
 
@@ -136,7 +222,7 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
 
       {/* Body */}
       <View className='w-full flex-1 bg-black relative overflow-hidden'>
-        <FlatList
+        <FlatList<Chat>
           ref={listRef}
           data={chats}
           className='px-7'
@@ -144,7 +230,7 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
           keyExtractor={(_, index)=>index.toString()}
           scrollEventThrottle={16}
           ListFooterComponent={()=><View style={{width:'100%', height:30}} />}
-          renderItem={({item:chat, index})=>{
+          renderItem={({index, item:chat})=>{
             const isFirstMessage = index === 0;
             const isLastMessage = index === chats.length-1;
             const isSender = chat.senderId === student.id;
@@ -182,39 +268,21 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
               lastTimeSender = chat.senderId !== chats[index-1].senderId
             }
 
-            const readChat = {
-              ...chat,
-              readReceipt: [...chat.readReceipt, student.id]
-            } as Chat;
-            const readChannel = {
-              ...channel,
-              latestMessage: readChat,
-              unreadMessages:0,
-            } as Channel
+            
 
-            const markChat = ()=>{
+            
 
-              // We send to the user's chat & channel websocket that he's read the chat
-              publish(`/chats/${channelId}`,JSON.stringify({
-                message:'Chat Marked As Read',
-                data: readChat
-              }))
-              
-              publish(`/channels/${student?.id}`, JSON.stringify({
-                  message:"Chat Marked As Read",
-                  data: readChannel
-              }))
-
-
-              markChatAsRead(channelId?.toString(),chat.id, student.id )
+            if(!isSender && !chat.readReceipt.includes(student?.id ?? "")){
+              console.log("Marking Chat As Read");
+              markChat(chat);
             }
 
 
             return <ChatItem
               key={chat.id}
               chat={chat}
-              read={chat.readReceipt.includes(student?.id ?? '')}
-              markAsRead={markChat}
+              read={isSender || chat.readReceipt.includes(student?.id ?? ' ')}
+              // markAsRead={markChat}
               channelColor={channel?.color}
               sender={sender}
               differentDay={differentDay}
@@ -240,10 +308,28 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
       {/* Footer */}
       <View className={`w-full flex flex-col ${file?'bg-black': 'bg-transparent'} rounded-b-[18px] relative items-center justify-center overflow-hidden`}>
         {/* Attachment Section */}
-        <View>
-          
+        {file && (<View className={`flex flex-row w-full min-h-0 items-center rounded-t-[18px] overflow-hidden rounded-b-[5px] rounded-bl-[18px] bg-black border-[5px] mb-1 border-background sticky ${file? 'h-[120px] opacity-100 bottom-0 pointer-events-auto':'h-0 opacity-0 -bottom-3 pointer-events-none'} transition-all duration-500 ease`}>
+          <View className='w-2 h-full bg-purple'/>
+          <View className={`w-[100px] ${file.mimeType.startsWith('*')? 'bg-transparent':'bg-background'} h-full items-center justify-center flex flex-row mr-3 relative`}>
+            {file.mimeType.startsWith('video') && <View className='w-full h-full bg-black absolute select-none items-center justify-center flex z-[1] bg-opacity-30'>
+              <PlayCircle variant='Bold' size={25} />
+            </View>}
+            {!file.mimeType.startsWith('*') && <Image resizeMode='cover' src={file.uri} className='w-full h-full object-cover' />}
+            {file.mimeType.startsWith('*') && <LottieView source={require('../assets/animations/doc-purple.json')} loop style={{width:'100%', height:'100%'}} />}
+          </View>
+          <View className='flex gap-1 flex-1 justify-center '>
+            <Text numberOfLines={1} className='text-white text-[13px] font-semibold whitespace-nowrap text-ellipsis'>{file?.name}</Text>
+            <Text className='text-[10px] text-secondary' >{fileTypes()}</Text>
+            <Text className='text-[10px] text-blue font-medium '>{getFileSize()}</Text>
+          </View>
+          <CloseCircle disabled={sendMessageMutation.isPending} color='#fff' onPress={()=>{
+            setFile(null)
+            setImageSrc('');
+            setThumbnailBlob(null);
+          }} style={{marginHorizontal:16}} className='text-white mr-7 cursor-pointer relative' size={28} variant='Bold'
+          />
+        </View>)}
 
-        </View>
         {/* Input and Buttons Section */}
         <View className={`w-full px-8 py-4 bg-background flex gap-7 z-[2] flex-row ${file?'': 'pt-[8px]'} flex-center relative overflow-hidden`}>
           <TextInput
@@ -275,41 +361,47 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
         ref={bottomSheetRef}
         contentBackground={Colors.background}
         >
-          <View className='flex flex-col gap-2'>
+          <View className='flex flex-col gap-4 pt-2 pb-4'>
 
             <Text className='color-white font-semibold self-center text-[16px]'>What would you like to upload?</Text>
 
 
-            <View className='w-[70%] self-center mt-4 flex flex-row flex-wrap'>
+            <View className='w-[70%] self-center my-4 flex flex-row flex-wrap'>
 
-              <View className='items-center w-[50%] gap-2'>
+              {/* Image Option */}
+              <TouchableOpacity onPress={()=>pickFile('image')} className='items-center w-[50%] gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-blue rounded-circle'>
+                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Image</Text>
+              </TouchableOpacity>
+
+              {/* Video Option */}
+              <TouchableOpacity onPress={()=>pickFile('video')} className='items-center w-[50%] gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-red-600 rounded-circle'>
+                  <VideoPlay color='#fff' size={20} variant='Bold'  /> 
+                </View>
+                
+                <Text className='text-white text-[11px]'>Video</Text>
+              </TouchableOpacity>
+
+              {/* Audio Option */}
+              <View className='items-center w-[50%] mt-6 gap-2'>
                 <View className='w-[50px] h-[50px] flex flex-center bg-purple rounded-circle'>
-                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+                  <MusicPlay color='#fff' size={20} variant='Bold'  /> 
                 </View>
                 
-                <Text className='text-white text-[11px]'>Image</Text>
-              </View>
-              <View className='items-center w-[50%] gap-2'>
-                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
-                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
-                </View>
-                
-                <Text className='text-white text-[11px]'>Image</Text>
+                <Text className='text-white text-[11px]'>Audio</Text>
               </View>
 
-              <View className='items-center w-[50%] mt-4 gap-2'>
-                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
-                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
+              {/* Doc Option */}
+              <View className='items-center w-[50%] mt-6 gap-2'>
+                <View className='w-[50px] h-[50px] flex flex-center bg-green-700 rounded-circle'>
+                  <DocumentText color='#fff' size={20} variant='Bold'  /> 
                 </View>
                 
-                <Text className='text-white text-[11px]'>Image</Text>
-              </View>
-              <View className='items-center w-[50%] mt-4 gap-2'>
-                <View className='w-[50px] h-[50px] flex flex-center bg-[rgba(255,255,255,0.1)] rounded-circle'>
-                  <ImageIIcon color='#fff' size={20} variant='Bold'  /> 
-                </View>
-                
-                <Text className='text-white text-[11px]'>Image</Text>
+                <Text className='text-white text-[11px]'>Doc</Text>
               </View>
 
             </View>
@@ -317,7 +409,7 @@ const ChatScreen = (props: ScreenProps<'Chats'>) => {
 
           </View>
 
-        </BottomSheet>
+      </BottomSheet>
 
     </View>
   );

@@ -11,7 +11,7 @@ import {InView} from 'react-native-intersection-observer';
 interface props{
     chat: Chat,
     channelColor?:string,
-    markAsRead: ()=> void,
+    markAsRead?: ()=> void,
     sender?:Member,
     read?:boolean,
     isSender?:boolean,
@@ -24,6 +24,14 @@ interface props{
 }
 export default function ChatItem(chatProps: props) {
     const {chat, markAsRead, channelColor, differentDay=false, differentDayBelow=false, firstSender=true, isSender=false, lastMessageSent=false, lastSender=false, read=false, sameSender=false, sender} = chatProps
+
+    // useEffect(()=>{
+    //     console.log("Marking as read..")
+
+    //     if(!read && !isSender){
+    //         markAsRead();
+    //     }
+    // },[])
 
     const currentTime = new Date();
     const isToday = ()=>{

@@ -15,8 +15,10 @@ export async function sendChat(channelId:string, chat:Chat){
     return response as AxiosResponse<ApiResponse, any>;
 }
 
-export async function sendAttachment(channelId:string, attachment:File, chat:Chat, thumbnail?:Blob | null){
+export async function sendAttachment(channelId:string, attachment:File|Blob, chat:Chat, thumbnail?:Blob | null){
+    console.log("Started")
     const pathVariables = `${channelId}/${chat.senderId}`;
+    console.log(attachment)
 
     const formData = new FormData();
     formData.append('attachment', attachment);
@@ -34,6 +36,8 @@ export async function sendAttachment(channelId:string, attachment:File, chat:Cha
         formData,
         {headers:{"Content-Type":'multipart/form-data'}}
     );
+
+    console.log(response);
 
     return response as AxiosResponse<ApiResponse, any>;
 }

@@ -68,10 +68,10 @@ function BottomSheet<T>(props: BottomSheetProps<T>, ref: Ref<BottomSheetRefType<
 
     // const exitAnim = navigationAnim == 'slide'? SlideInDown: FadeOut;
 
-    const closeBottomSheet = ()=>{
-        setOpen(!open);
+    const closeBottomSheet = (result?: T)=>{
+        setOpen(false);
         offset.value = 0;
-        onClosed();
+        onClosed(result);
     }
 
     const pan =  Gesture.Pan()
@@ -96,8 +96,7 @@ function BottomSheet<T>(props: BottomSheetProps<T>, ref: Ref<BottomSheetRefType<
 
     useImperativeHandle(ref, ()=>({
         close: (result)=>{
-            onClosed(result);
-            closeBottomSheet();
+            closeBottomSheet(result);
 
         },
         toggle: ()=>{

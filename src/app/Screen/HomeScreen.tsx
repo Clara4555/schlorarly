@@ -6,7 +6,7 @@ import { ChannelsProvider } from '../components/channels/ChannelsProvider';
 import { ScreenProps } from '../../../navigation';
 
 const HomeScreen = (props : ScreenProps<'Home'>) => {
-  const [activeTab, setActiveTab] = useState('home'); // Default tab
+  const [activeTab, setActiveTab] = useState('chat'); // Default tab
 
   return (
     <View style={styles.container}>

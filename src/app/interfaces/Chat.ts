@@ -1,4 +1,6 @@
 import { Member } from "./Member"
+
+export type AttachmentType = 'image' | 'video' | 'audio' | 'document';
 export interface Chat{
     id:string,
     senderId:string,
@@ -8,7 +10,7 @@ export interface Chat{
     attachment?:string,
     fileName?:string,
     thumbnail?:string,
-    attachmentType:'image' | 'video' | 'audio' | 'document',
+    attachmentType:AttachmentType,
     messageType:'chat' | 'update' |'member' | 'create'
     timestamp:string,
     readReceipt:string[],
