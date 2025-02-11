@@ -12,6 +12,7 @@ import ChatScreen from './src/app/Screen/ChatScreen';
 import { ChatsProvider } from './src/app/components/chats/ChatsProvider';
 import { Colors } from './src/app/constants/Colors';
 import AnnouncementScreen from './src/app/Screen/AnnouncementScreen';
+import EditProfileScreen from './src/app/Screen/EditProfileScreen';
 
 type RootStackParamList = {
   Welcome: undefined,
@@ -24,6 +25,7 @@ type RootStackParamList = {
   Settings: undefined,
   CreateChannel: undefined,
   Chats: {channelId: String}
+  EditProfileScreen: undefined,  // ✅ Add this line
 }
 
 /**
@@ -94,5 +96,7 @@ export default function Navigation(){
         component={SettingsScreen}  // Settings screen
         options={{ headerShown: false }} 
       />
+        <Stack.Screen name='EditProfileScreen' component={EditProfileScreen} options={{headerShown: false}}/>
   </Stack.Navigator>
+  
 }

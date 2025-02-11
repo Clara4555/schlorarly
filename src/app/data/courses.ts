@@ -9,7 +9,7 @@ export function coursesDummyData(): Course[] {
             instructor: 'John Doe',
             duration: '6 weeks',
             difficulty: 'Intermediate',
-            imageUrl: '/images/java-course.jpg'
+            imageUrl: 'https://img.freepik.com/free-vector/organic-flat-computer-programming-illustration_23-2148955255.jpg?uid=R88163011&ga=GA1.1.407944512.1731239688&semt=ais_hybridg'
         },
         {
             id: '2',
@@ -18,7 +18,7 @@ export function coursesDummyData(): Course[] {
             instructor: 'Jane Smith',
             duration: '5 weeks',
             difficulty: 'Advanced',
-            imageUrl: '/images/javafx-course.jpg'
+            imageUrl: 'https://img.freepik.com/free-vector/programmer-concept-illustration_114360-2417.jpg?uid=R88163011&ga=GA1.1.407944512.1731239688&semt=ais_hybrid'
         },
         {
             id: '3',
