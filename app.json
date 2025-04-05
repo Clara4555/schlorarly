@@ -20,7 +20,10 @@
         "foregroundImage": "./assets/scholarly-app-icon.png",
         "backgroundColor": "tranparent"
       },
-      "permissions": ["READ_EXTERNAL_STORAGE", "WRITE_EXTERNAL_STORAGE"],
+      "permissions": [
+        "READ_EXTERNAL_STORAGE",
+        "WRITE_EXTERNAL_STORAGE"
+      ],
       "package": "com.niit.scholarly"
     },
     "web": {
@@ -31,6 +34,9 @@
       "eas": {
         "projectId": "b51ab897-3c40-4325-9e35-d6adbc97b6d5"
       }
-    }
+    },
+    "plugins": [
+      "expo-router"
+    ]
   }
 }
