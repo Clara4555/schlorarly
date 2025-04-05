@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, ScrollView, Image, StyleSheet } from 'react-native';
 import { coursesDummyData } from '../../data/courses'; // Assuming this is your dummy data import
 
-export default function CoursesPage() {
+export default function batchesPage() {
   const courses = coursesDummyData();
 
   return (

@@ -1,59 +1,58 @@
 import React from 'react';
-import {BookSaved, Calendar, Home, Setting, Message, Messages, DirectNotification} from 'iconsax-react-native'
+import { BookSaved, Calendar, Messages, VolumeMute, Call } from 'iconsax-react-native';
 import { View, TouchableOpacity, StyleSheet } from 'react-native';
-import { MaterialIcons } from '@expo/vector-icons'; 
 import { Colors } from '../constants/Colors';
 
 const BottomNav = ({ activeTab, setActiveTab }) => {
   return (
     <View style={styles.navContainer}>
       <View style={styles.bottomNav}>
-        
 
-        {/* Chat Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('chat')}>
-          <Messages
-            variant={activeTab === 'chat' ? 'Bold' : 'Linear'}
-            size={25}
-            color={activeTab === 'chat' ?  Colors.purple : 'white'}
-          />
-        </TouchableOpacity>
-
-        {/* Events Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('events')}>
+        {/* schedule-tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('schedule')}>
           <Calendar
-            variant={activeTab === 'events' ? 'Bold' : 'Linear'}
+            variant={activeTab === 'schedule' ? 'Bold' : 'Linear'}
             size={25}
-            color={activeTab === 'events' ?  Colors.purple : 'white'}
+            color={activeTab === 'schedule' ? Colors.purple : 'white'}
           />
         </TouchableOpacity>
 
-      { /* Announcement Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('announcements')}>
-          <DirectNotification
-            variant={activeTab === 'announcements' ? 'Bold' : 'Linear'}
+        {/* chats tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('chats')}>
+          <Messages
+            variant={activeTab === 'chats' ? 'Bold' : 'Linear'}
             size={25}
-            color={activeTab === 'announcements' ?  Colors.purple : 'white'}
+            color={activeTab === 'chats' ? Colors.purple : 'white'}
           />
         </TouchableOpacity>
-        
-        {/* Courses Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('courses')}>
+
+        {/* batches tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('batches')}>
           <BookSaved
-            variant={activeTab === 'courses' ? 'Bold' : 'Linear'}
+            variant={activeTab === 'batches' ? 'Bold' : 'Linear'}
             size={25}
-            color={activeTab === 'courses' ?  Colors.purple : 'white'}
+            color={activeTab === 'batches' ? Colors.purple : 'white'}
           />
         </TouchableOpacity>
 
-        {/* Settings Tab */}
-        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('settings')}>
-          <Setting
-            variant={activeTab === 'settings' ? 'Bold' : 'Linear'}
+        {/* highlights tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('highlights')}>
+          <VolumeMute
+            variant={activeTab === 'highlights' ? 'Bold' : 'Linear'}
             size={25}
-            color={activeTab === 'settings' ? Colors.purple : 'white'}
+            color={activeTab === 'highlights' ? Colors.purple : 'white'}
           />
         </TouchableOpacity>
+
+        {/* calls tab */}
+        <TouchableOpacity style={styles.navItem} onPress={() => setActiveTab('calls')}>
+          <Call
+            variant={activeTab === 'calls' ? 'Bold' : 'Linear'}
+            size={25}
+            color={activeTab === 'calls' ? Colors.purple : 'white'}
+          />
+        </TouchableOpacity>
+
       </View>
     </View>
   );
@@ -68,25 +67,25 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     paddingHorizontal: 10,
-    borderRadius:30,
+    borderRadius: 30,
     backgroundColor: Colors.background,
-    overflow:'hidden'// Rounded top-right corner
+    overflow: 'hidden',
   },
 
-  navItem:{
+  navItem: {
     flex: 1,
     alignItems: 'center',
     padding: 10,
-    backgroundColor: 'transparent', // Black background
-    borderTopLeftRadius: 20, // Rounded top-left corner
-    borderTopRightRadius: 20, // Rounded top-right corner
+    backgroundColor: 'transparent',
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
 
   bottomNav: {
     flexDirection: 'row',
     justifyContent: 'space-around',
     width: '90%',
-    paddingVertical: 10, 
+    paddingVertical: 10,
   },
 });
 

@@ -2,7 +2,7 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import React from 'react'
 import { ScreenProps } from '../../../../navigation'
 import { Channel } from '../../interfaces/Channel'
-import CircleImage from '../images/CircleImage';
+import CircleImage from '../../assets/images/CircleImage';
 
 interface props extends ScreenProps<'Home'>{
     channel: Channel,

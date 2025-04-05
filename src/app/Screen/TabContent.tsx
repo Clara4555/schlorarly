@@ -1,53 +1,49 @@
 import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Animated } from 'react-native';
-import ChatScreen from './ChatScreen';
-import SettingsScreen from './SettingsScreen';
-import NotificationsScreen from './NotificationsScreen';
 import { Colors } from '../constants/Colors';
 import ChatsPage from './pages/ChatsPage';
-import EventsPage from './pages/EventsPage';
-import SettingsPage from './pages/SettingsPage';
+import SettingsPage from './pages/highlights';
 import HomePage from './pages/HomePage';
-import CoursesPage from './pages/CoursesPage';
+import CoursesPage from './pages/batches';
+import SchedulePage from './pages/SchedulePage';
 import { ScreenProps } from '../../../navigation';
 import AnnouncementPage from './pages/AnnouncementPage';
+import CallsPage from './pages/CallsPage'; // Add this import
 
 interface props extends ScreenProps<'Home'> {
   activeTab: string,
-  
 }
 
 const TabContent = (props: props) => {
-  const {activeTab} = props
+  const { activeTab } = props;
   const [fadeAnim] = useState(new Animated.Value(0)); 
-
 
   useEffect(() => {
     Animated.timing(fadeAnim, {
-      toValue: 1, 
-      duration: 500, 
-      useNativeDriver: true, 
+      toValue: 1,
+      duration: 500,
+      useNativeDriver: true,
     }).start();
-  }, [activeTab]); // Dependency array, triggers on activeTab change
+  }, [activeTab]);
 
-  // Select the content based on the activeTab value
-  const Content = ()=> {
+  const Content = () => {
     switch (activeTab) {
-      // case 'chat':
-       
-      case 'events':
-        return <EventsPage />;
-      case 'announcements':
-      return <AnnouncementPage {...props} />;
-      case 'courses':
-        return <CoursesPage />;
-      case 'settings':
-        return <SettingsPage />;
-      default:
+      case 'schedule':
+        return <SchedulePage />;
+      case 'chats':
         return <ChatsPage {...props} />;
+      case 'batches':
+        return <CoursesPage />;
+      case 'highlights':
+        return <SettingsPage />;
+        case 'calls':
+          return <CallsPage />;
+      case 'announcements':
+        return <AnnouncementPage {...props} />;
+      default:
+        return <SchedulePage />; // fallback to schedule as the default
     }
   }
-  
 
   return (
     <Animated.View style={[styles.contentContainer, { opacity: fadeAnim }]}>
