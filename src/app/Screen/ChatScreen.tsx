@@ -8,7 +8,7 @@ import {
   MenuTrigger,
 } from 'react-native-popup-menu';
 import { ScreenProps } from '../../../navigation';
-import CircleImage from '../components/images/CircleImage';
+import CircleImage from '../assets/images/CircleImage';
 import { useChannel } from '../components/channels/ChannelsProvider';
 import { ArrowDown2, ArrowLeft, Call, ChartCircle, CloseCircle, DocumentText, Image as ImageIIcon, MusicPlay, Paperclip, PlayCircle, Send, VideoPlay } from 'iconsax-react-native';
 import { StatusBar } from 'react-native';

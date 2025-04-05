@@ -1,7 +1,7 @@
 import { View, Text, Image, ScrollView, StyleSheet, StatusBar, TouchableHighlight, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { useChannels } from '../../components/channels/ChannelsProvider'
-import CircleImage from '../../components/images/CircleImage';
+import CircleImage from '../../assets/images/CircleImage';
 import { useStudent } from '../../components/students/StudentProvider';
 import Input from '../../components/input/Input';
 import LottieView from 'lottie-react-native';
