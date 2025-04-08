@@ -3,17 +3,22 @@ import { View, Text, TextInput, Image, StyleSheet } from 'react-native';
 import { Calendar } from 'react-native-calendars';
 import { Colors } from '../../constants/Colors';
 import { MaterialIcons } from '@expo/vector-icons';
+import {Setting} from "iconsax-react-native";
+import { ScreenProps } from '../../../../navigation';
 
-const SchedulePage = () => {
+const SchedulePage = (props : ScreenProps<'Home'>) => {
+  const {navigation} = props;
   return (
     <View style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
         <Text style={styles.headerText}>Schedule</Text>
-        <Image 
-         source={require('../../assets/mynft.jpg')}  // Replace with real image URL
-          style={styles.profileImage}
-        />
+          <View  className={'flex-row items-center gap-6'}>
+              <Setting onPress={()=>navigation.navigate('Settings')} size={28} color={'#fff'} />
+              <Image
+                  source={require('../../assets/mynft.jpg')}  // Replace with real image URL
+                  style={styles.profileImage}
+              />          </View>
       </View>
 
       {/* Search Bar */}

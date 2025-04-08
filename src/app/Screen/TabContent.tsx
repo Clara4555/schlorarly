@@ -29,7 +29,7 @@ const TabContent = (props: props) => {
   const Content = () => {
     switch (activeTab) {
       case 'schedule':
-        return <SchedulePage />;
+        return <SchedulePage {...props} />;
       case 'chats':
         return <ChatsPage {...props} />;
       case 'batches':
@@ -41,7 +41,7 @@ const TabContent = (props: props) => {
       case 'announcements':
         return <AnnouncementPage {...props} />;
       default:
-        return <SchedulePage />; // fallback to schedule as the default
+        return <SchedulePage {...props}  />; // fallback to schedule as the default
     }
   }
 
